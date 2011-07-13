@@ -56,10 +56,10 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 			'first_name' => 'Admin',
 		));
 
-		$this->assertEquals($user, (object)array(
+		$this->assertEquals($admin, (object)array(
 			'first_name' => 'Admin',
 			'last_name' => 'Neekburm',
-			'email' => 'user0001@example.org',
+			'email' => 'user0002@example.org',
 			'is_admin' => true,
 		));
 	}
