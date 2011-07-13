@@ -2,9 +2,15 @@
 
 class PhactoryTest extends PHPUnit_Framework_TestCase
 {
+	public function setup()
+	{
+		Phactory::reset();
+		Phactory::factory('user', 'UserPhactory');
+		Phactory::factory('comment', 'CommentPhactory');
+	}
+
 	public function testBasicCreate()
 	{
-		Phactory::factory('user', 'UserPhactory');
 		$user = Phactory::user();
 
 		$this->assertEquals($user, (object)array(
@@ -16,7 +22,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testSerialNumberIncrements()
 	{
-		Phactory::factory('user', 'UserFactory');
 		$one = Phactory::user();
 		$two = Phactory::user();
 
@@ -25,7 +30,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testBlueprintsOverlay()
 	{
-		Phactory::factory('user', 'UserFactory');
 		$admin = Phactory::user('admin');
 
 		$this->assertEquals($admin, (object)array(
@@ -38,7 +42,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testOverrideAttributes()
 	{
-		Phactory::factory('user', 'UserFactory');
 		$user = Phactory::user(array(
 			'last_name' => 'Blarg#{sn}',
 		));
@@ -63,8 +66,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testRelationships()
 	{
-		Phactory::factory('user', 'UserPhactory');
-		Phactory::factory('comment', 'CommentFactory');
 		$comment = Phactory::comment();
 
 		$this->assertEquals($comment, (object)array(
@@ -86,7 +87,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCustomBuilder()
 	{
-		Phactory::factory('user', 'UserPhactory');
 		Phactory::builder(new Builder);
 
 		$user = Phactory::user();
