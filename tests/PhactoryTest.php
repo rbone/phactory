@@ -1,6 +1,6 @@
 <?php
 
-class PhactoryTest
+class PhactoryTest extends PHPUnit_Framework_TestCase
 {
 	public function testBasicCreate()
 	{
