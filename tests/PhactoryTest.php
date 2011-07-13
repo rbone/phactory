@@ -83,6 +83,17 @@ class PhactoryTest
 
 		$this->assertTrue($comment->user->is_admin);
 	}
+
+	public function testCustomBuilder()
+	{
+		Phactory::factory('user', 'UserPhactory');
+		Phactory::builder(new Builder);
+
+		$user = Phactory::user();
+
+		$this->assertInstanceOf('TestObject', $user);
+		$this->assertEquals($user->first_name, 'Fronzel');
+	}
 }
 
 class UserPhactory
@@ -115,3 +126,18 @@ class CommentPhactory
 		);
 	}
 }
+
+class Builder
+{
+	public function create($type, $blueprint)
+	{
+		$object = new TestObject();
+
+		foreach ($blueprint as $key => $value)
+			$object->$key = $value;
+
+		return $object;
+	}
+}
+
+class TestObject {}
