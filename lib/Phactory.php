@@ -1,15 +1,20 @@
 <?php
 
+use \Phactory\Blueprint;
+use \Phactory\HasOneRelationship;
+use \Phactory\DefaultBuilder;
+
 class Phactory
 {
 	private static
 		$factories = array(),
-		$count = 0;
+		$builder
+		;
 
 	public static function reset()
 	{
 		self::$factories = array();
-		self::$count = 0;
+		self::$builder = new DefaultBuilder;
 	}
 
 	public static function factory($name, $class)
@@ -17,47 +22,66 @@ class Phactory
 		self::$factories[$name] = $class;
 	}
 
-	public static function __callStatic($name, $arguments)
+	public static function has_a($name, $arguments = array())
 	{
-		if (!isset(self::$factories[$name]))
-			throw new BadMethodCallException("No such method $name");
+		$arguments = func_get_args();
+		array_shift($arguments);
 
+		list($type, $override) = self::resolve_args($arguments);
 
+		return new HasOneRelationship($name, $type, $override);
+	}
 
+	public function belongs_to($name, $arguments = array())
+	{
+		$arguments = func_get_args();
+		array_shift($arguments);
 
+		list($type, $override) = self::resolve_args($arguments);
+
+		return new BelongsToRelationship($name, $type, $override);
+	}
+
+	public static function __callStatic($name, $arguments = array())
+	{
+		list($type, $override) = self::resolve_args($arguments);
+
+		$blueprint = self::get_blueprint($name, $type, $override);
+
+		return self::$builder->create($blueprint);
+	}
+
+	public static function get_blueprint($name, $type, $override)
+	{
 		$class = self::$factories[$name];
 		$factory = new $class;
-
-		$type = 'blueprint';
-		$override = array();
-
-		if (count($arguments) == 2)
-		{
-			$type = $arguments[0];
-			$override = $arguments[1];
-		}
-		else if (count($arguments) == 1)
-		{
-			if (is_string($arguments[0]))
-				$type = $arguments[0];
-			else if (is_array($arguments[0]))
-				$override = $arguments[0];
-		}
 
 		if ($type != 'blueprint')
 			$blueprint = array_merge($factory->blueprint(), $factory->$type(), $override);
 		else
 			$blueprint = array_merge($factory->blueprint(), $override);
 
+		return new Blueprint($name, $blueprint);
+	}
 
-		$count = ++self::$count;
-		$blueprint = array_map(function ($value) use ($count) {
-			if (is_string($value))
-				return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
-			else
-				return $value;
-		}, $blueprint);
+	private static function resolve_args($args)
+	{
+		$type = 'blueprint';
+		$override = array();
 
-		return (object)$blueprint;
+		if (count($args) == 2)
+		{
+			$type = $args[0] ?: 'blueprint';
+			$override = $args[1] ?: array();
+		}
+		else if (count($args) == 1)
+		{
+			if (is_string($args[0]))
+				$type = $args[0];
+			else if (is_array($args[0]))
+				$override = $args[0];
+		}
+
+		return array($type, $override);
 	}
 }

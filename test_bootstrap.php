@@ -1,10 +1,12 @@
 <?php
 
-$basedir = dirname(__FILE__).'/';
+spl_autoload_register(function($class) use ($basedir) {
+	$parts = explode('\\', $class);
 
-require 'externals/ClassLoader.php';
+	$path = __DIR__ . '/lib/' . implode('/', $parts) . '.php';
 
-$class_loader = new ClassLoader();
-$class_loader->includePaths(array(
-	$basedir.'lib',
-))->register();
+	if (!file_exists($path))
+		return false;
+
+	require $path;
+});

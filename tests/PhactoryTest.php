@@ -7,6 +7,7 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 		Phactory::reset();
 		Phactory::factory('user', 'UserPhactory');
 		Phactory::factory('comment', 'CommentPhactory');
+		Phactory::factory('invoice', 'InvoicePhactory');
 	}
 
 	public function testBasicCreate()
@@ -74,25 +75,27 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 			'user' => (object)array(
 				'first_name' => 'Fronzel',
 				'last_name' => 'Neekburm',
-				'email' => 'user#{sn}@example.org',
+				'email' => 'user0001@example.org',
 			)
 		));
 
-		$comment = Phactory::comment(array(
-			'user' => Phactory::user('admin'),
-		));
+		$comment = Phactory::comment('admin');
 
 		$this->assertTrue($comment->user->is_admin);
 	}
 
-	public function testCustomBuilder()
+	public function testVariationRelationships()
 	{
-		Phactory::builder(new Builder);
+		$comment = Phactory::comment('admin');
 
-		$user = Phactory::user();
+		$this->assertTrue($comment->user->is_admin);
+	}
 
-		$this->assertInstanceOf('TestObject', $user);
-		$this->assertEquals($user->first_name, 'Fronzel');
+	public function testRelationshipWithSharedBlueprint()
+	{
+		$invoice = Phactory::invoice();
+
+		$this->assertSame($invoice->designer, $invoice->client);
 	}
 }
 
@@ -122,22 +125,93 @@ class CommentPhactory
 		return array(
 			'title' => 'OMGWTFBBQ!',
 			'content' => 'Food goes in here.',
-			'user' => Phactory::user(),
+			'user' => Phactory::has_a('user'),
+		);
+	}
+
+	public function admin()
+	{
+		return array(
+			'user' => Phactory::has_a('user', 'admin'),
 		);
 	}
 }
 
-class Builder
+class InvoicePhactory
 {
-	public function create($type, $blueprint)
+	public function blueprint()
 	{
-		$object = new TestObject();
-
-		foreach ($blueprint as $key => $value)
-			$object->$key = $value;
-
-		return $object;
+		$user = Phactory::user();
+		return array(
+			'amount' => 100,
+			'client' => $user,
+			'designer' => $user,
+		);
 	}
 }
 
-class TestObject {}
+class ContestPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'title' => 'May contest #{sn}',
+			'user' => Phactory::has_a('user'),
+			'brief' => Phactory::has_a('brief'),
+		);
+	}
+}
+
+class BriefPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'description' => 'Food goes in here',
+			'requirements' => 'In mah belly',
+			'contest' => Phactory::belongs_to('contest'),
+		);
+	}
+}
+
+
+class ContestEntryPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'contest' => Phactory::belongs_to('contest'),
+			'design' => Phactory::has_a('design'),
+			'user' => Phactory::uses('design.user'),
+			'title' => 'Entry #{sn} title',
+		);
+	}
+}
+
+class DesignPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'attachment' => Phactory::has_a('attachment'),
+			'user' => Phactory::uses('attachment.user'),
+		);
+	}
+}
+
+class AttachmentPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'title' => 'Attachment #{sn}',
+			'filename' => 'example.png',
+			'user' => Phactory::has_a('user'),
+			'timecreated' => 1234567890,
+			'mimetype' => 'image/png',
+			'attachmentkey' => 'tmp',
+			'filesize' => 1024,
+			'filehash' => 'myfakehash',
+		);
+	}
+}
