@@ -5,23 +5,22 @@ use \Phactory\HasOneRelationship;
 use \Phactory\BelongsToRelationship;
 use \Phactory\Dependancy;
 use \Phactory\DefaultBuilder;
+use \Phactory\Loader;
 
 class Phactory
 {
-	private static
-		$factories = array(),
-		$builder
-		;
+	private static $loader;
+	private static $builder;
 
 	public static function reset()
 	{
-		self::$factories = array();
+		self::$loader = new Loader;
 		self::$builder = new DefaultBuilder;
 	}
 
 	public static function factory($name, $class)
 	{
-		self::$factories[$name] = $class;
+		self::loader()->factory($name, $class);
 	}
 
 	public static function has_a($name, $arguments = array())
@@ -55,17 +54,12 @@ class Phactory
 
 		$blueprint = self::get_blueprint($name, $type, $override);
 
-		return self::$builder->create($blueprint);
+		return self::builder()->create($blueprint);
 	}
 
 	public static function get_blueprint($name, $type, $override)
 	{
-		if (!isset(self::$factories[$name]))
-			throw new Exception("Unknown factory '$name'");
-
-		$class = self::$factories[$name];
-
-		$factory = new $class;
+		$factory = self::loader()->load($name);
 
 		if ($type != 'blueprint')
 			$blueprint = array_merge($factory->blueprint(), $factory->$type(), $override);
@@ -73,6 +67,16 @@ class Phactory
 			$blueprint = array_merge($factory->blueprint(), $override);
 
 		return new Blueprint($name, $blueprint);
+	}
+
+	private static function loader()
+	{
+		return isset(self::$loader) ? self::$loader : self::$loader = new Loader;
+	}
+
+	private static function builder()
+	{
+		return isset(self::$builder) ? self::$builder : self::$builder = new DefaultBuilder;
 	}
 
 	private static function resolve_args($args)

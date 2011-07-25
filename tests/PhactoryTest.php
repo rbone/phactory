@@ -5,14 +5,6 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 	public function setup()
 	{
 		Phactory::reset();
-		Phactory::factory('user', 'UserPhactory');
-		Phactory::factory('comment', 'CommentPhactory');
-		Phactory::factory('invoice', 'InvoicePhactory');
-		Phactory::factory('contest', 'ContestPhactory');
-		Phactory::factory('brief', 'BriefPhactory');
-		Phactory::factory('contestentry', 'ContestEntryPhactory');
-		Phactory::factory('design', 'DesignPhactory');
-		Phactory::factory('attachment', 'AttachmentPhactory');
 	}
 
 	public function testBasicCreate()
