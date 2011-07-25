@@ -3,6 +3,8 @@
 namespace Phactory;
 
 use Phactory\HasOneRelationship;
+use Phactory\BelongsToRelationship;
+use Phactory\Dependancy;
 
 class DefaultBuilder
 {
@@ -22,9 +24,18 @@ class DefaultBuilder
 				return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
 			else if ($value instanceof HasOneRelationship)
 				return $self->create($value->blueprint());
+			else if ($value instanceof BelongsToRelationship)
+				return $self->create($value->blueprint());
 			else
 				return $value;
 		}, $blueprint->values());
+
+		$blueprint = array_map(function ($value) use($blueprint) {
+			if ($value instanceof Dependancy && $value->met($blueprint))
+				return $value->meet($blueprint);
+
+			return $value;
+		}, $blueprint);
 
 		return (object)$blueprint;
 	}

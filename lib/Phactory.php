@@ -2,6 +2,8 @@
 
 use \Phactory\Blueprint;
 use \Phactory\HasOneRelationship;
+use \Phactory\BelongsToRelationship;
+use \Phactory\Dependancy;
 use \Phactory\DefaultBuilder;
 
 class Phactory
@@ -42,6 +44,11 @@ class Phactory
 		return new BelongsToRelationship($name, $type, $override);
 	}
 
+	public function uses($dependancy)
+	{
+		return new Dependancy($dependancy);
+	}
+
 	public static function __callStatic($name, $arguments = array())
 	{
 		list($type, $override) = self::resolve_args($arguments);
@@ -53,7 +60,11 @@ class Phactory
 
 	public static function get_blueprint($name, $type, $override)
 	{
+		if (!isset(self::$factories[$name]))
+			throw new Exception("Unknown factory '$name'");
+
 		$class = self::$factories[$name];
+
 		$factory = new $class;
 
 		if ($type != 'blueprint')

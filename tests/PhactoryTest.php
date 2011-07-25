@@ -8,6 +8,11 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 		Phactory::factory('user', 'UserPhactory');
 		Phactory::factory('comment', 'CommentPhactory');
 		Phactory::factory('invoice', 'InvoicePhactory');
+		Phactory::factory('contest', 'ContestPhactory');
+		Phactory::factory('brief', 'BriefPhactory');
+		Phactory::factory('contestentry', 'ContestEntryPhactory');
+		Phactory::factory('design', 'DesignPhactory');
+		Phactory::factory('attachment', 'AttachmentPhactory');
 	}
 
 	public function testBasicCreate()
@@ -65,7 +70,7 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 		));
 	}
 
-	public function testRelationships()
+	public function testHasARelationship()
 	{
 		$comment = Phactory::comment();
 
@@ -91,11 +96,25 @@ class PhactoryTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($comment->user->is_admin);
 	}
 
+	public function testBelongsToRelationship()
+	{
+		$brief = Phactory::brief();
+
+		$this->assertEquals($brief->contest, (object)array(
+			'title' => 'May contest 0001',
+			'user' => (object)array(
+				'first_name' => 'Fronzel',
+				'last_name' => 'Neekburm',
+				'email' => 'user0001@example.org',
+			),
+		));
+	}
+
 	public function testRelationshipWithSharedBlueprint()
 	{
-		$invoice = Phactory::invoice();
+		$entry = Phactory::contestentry();
 
-		$this->assertSame($invoice->designer, $invoice->client);
+		$this->assertSame($entry->user, $entry->design->user);
 	}
 }
 
@@ -157,7 +176,6 @@ class ContestPhactory
 		return array(
 			'title' => 'May contest #{sn}',
 			'user' => Phactory::has_a('user'),
-			'brief' => Phactory::has_a('brief'),
 		);
 	}
 }
