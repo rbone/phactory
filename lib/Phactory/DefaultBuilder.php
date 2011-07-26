@@ -37,6 +37,11 @@ class DefaultBuilder
 			return $value;
 		}, $blueprint);
 
+		return $this->toObject($blueprint);
+	}
+
+	protected function toObject($blueprint)
+	{
 		return (object)$blueprint;
 	}
 }
