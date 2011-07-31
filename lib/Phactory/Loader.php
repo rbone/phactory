@@ -16,7 +16,7 @@ class Loader
 		if (isset($this->factories[$name]))
 			return new $this->factories[$name];
 
-		$class = "{$name}Phactory";
+		$class = ucfirst($name)."Phactory";
 		if (class_exists($class))
 			return new $class;
 
