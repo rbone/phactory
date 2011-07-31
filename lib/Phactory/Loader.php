@@ -20,6 +20,6 @@ class Loader
 		if (class_exists($class))
 			return new $class;
 
-		throw new Exception("Unknown factory '$name'");
+		throw new \Exception("Unknown factory '$name'");
 	}
 }
