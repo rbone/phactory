@@ -74,8 +74,11 @@ class Phactory
 		return isset(self::$loader) ? self::$loader : self::$loader = new Loader;
 	}
 
-	private static function builder()
+	public static function builder($builder=null)
 	{
+		if (is_object($builder))
+			self::$builder = $builder;
+
 		return isset(self::$builder) ? self::$builder : self::$builder = new DefaultBuilder;
 	}
 

@@ -12,10 +12,11 @@ class DefaultBuilder
 
 	public function create($blueprint)
 	{
-		if (!isset($this->count[$blueprint->name]))
-			$this->count[$blueprint->name] = 0;
+		$name = $blueprint->name;
+		if (!isset($this->count[$name]))
+			$this->count[$name] = 0;
 
-		$count = ++$this->count[$blueprint->name];
+		$count = ++$this->count[$name];
 
 		$self = $this;
 
@@ -37,10 +38,10 @@ class DefaultBuilder
 			return $value;
 		}, $blueprint);
 
-		return $this->toObject($blueprint);
+		return $this->toObject($name, $blueprint);
 	}
 
-	protected function toObject($blueprint)
+	protected function toObject($name, $blueprint)
 	{
 		return (object)$blueprint;
 	}
