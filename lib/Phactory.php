@@ -23,7 +23,7 @@ class Phactory
 		self::loader()->factory($name, $class);
 	}
 
-	public static function has_a($name, $arguments = array())
+	public static function has_one($name, $arguments = array())
 	{
 		$arguments = func_get_args();
 		array_shift($arguments);
@@ -31,16 +31,6 @@ class Phactory
 		list($type, $override) = self::resolve_args($arguments);
 
 		return new HasOneRelationship($name, $type, $override);
-	}
-
-	public function belongs_to($name, $arguments = array())
-	{
-		$arguments = func_get_args();
-		array_shift($arguments);
-
-		list($type, $override) = self::resolve_args($arguments);
-
-		return new BelongsToRelationship($name, $type, $override);
 	}
 
 	public function uses($dependancy)
