@@ -2,6 +2,11 @@
 
 class RelationshipsTest extends PHPUnit_Framework_TestCase
 {
+	public function setup()
+	{
+		Phactory::reset();
+	}
+
 	public function testHasOneRelationship()
 	{
 		$comment = Phactory::comment();

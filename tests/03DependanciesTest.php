@@ -1,12 +1,10 @@
 <?php
 
-/**
- * @runTestsInSeparateProcesses
- */
 class DependanciesTest extends PHPUnit_Framework_TestCase
 {
 	public function testDependancy()
 	{
+		Phactory::reset();
 		$entry = Phactory::entry();
 
 		$this->assertSame($entry->designer, $entry->design->designer);

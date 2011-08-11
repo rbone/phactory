@@ -1,10 +1,12 @@
 <?php
 
-/**
- * @runTestsInSeparateProcesses
- */
 class BasicsTest extends PHPUnit_Framework_TestCase
 {
+	public function setup()
+	{
+		Phactory::reset();
+	}
+
 	public function testBasicCreate()
 	{
 		$user = Phactory::user();
