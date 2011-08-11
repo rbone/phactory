@@ -1,6 +1,6 @@
 <?php
 
-class DependanciesTest extends PHPUnit_Framework_TestCase
+class DependenciesTest extends PHPUnit_Framework_TestCase
 {
 	public function testDependancy()
 	{
