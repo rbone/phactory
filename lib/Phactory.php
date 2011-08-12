@@ -6,16 +6,19 @@ use \Phactory\BelongsToRelationship;
 use \Phactory\Dependancy;
 use \Phactory\DefaultBuilder;
 use \Phactory\Loader;
+use \Phactory\Fixtures;
 
 class Phactory
 {
 	private static $loader;
 	private static $builder;
+	private static $fixtures;
 
 	public static function reset()
 	{
-		self::$loader = new Loader;
-		self::$builder = new DefaultBuilder;
+		self::$loader = null;
+		self::$builder = null;
+		self::$fixtures = null;
 	}
 
 	public static function factory($name, $class)
@@ -42,9 +45,15 @@ class Phactory
 	{
 		list($type, $override) = self::resolve_args($arguments);
 
+		if (self::fixtures()->has_fixture($name, $type))
+			return self::fixtures()->get_fixture($name, $type);
+
 		$blueprint = self::get_blueprint($name, $type, $override);
 
 		$object = self::builder()->create($blueprint);
+
+		if ($blueprint->is_fixture())
+			self::fixtures()->set_fixture($name, $type, $object);
 
 		return $object;
 	}
@@ -67,6 +76,11 @@ class Phactory
 			self::$builder = $builder;
 
 		return isset(self::$builder) ? self::$builder : self::$builder = new DefaultBuilder;
+	}
+
+	public static function fixtures()
+	{
+		return isset(self::$fixtures) ? self::$fixtures : self::$fixtures = new Fixtures;
 	}
 
 	private static function resolve_args($args)
