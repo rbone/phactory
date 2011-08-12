@@ -4,13 +4,6 @@ namespace Phactory;
 
 class Loader
 {
-	private $factories;
-
-	public function factory($name, $class)
-	{
-		$this->factories[$name] = $class;
-	}
-
 	public function load($name)
 	{
 		$class = ucfirst($name)."Phactory";

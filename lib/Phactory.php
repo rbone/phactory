@@ -7,23 +7,21 @@ use \Phactory\Dependancy;
 use \Phactory\DefaultBuilder;
 use \Phactory\Loader;
 use \Phactory\Fixtures;
+use \Phactory\Triggers;
 
 class Phactory
 {
 	private static $loader;
 	private static $builder;
 	private static $fixtures;
+	private static $triggers;
 
 	public static function reset()
 	{
 		self::$loader = null;
 		self::$builder = null;
 		self::$fixtures = null;
-	}
-
-	public static function factory($name, $class)
-	{
-		self::loader()->factory($name, $class);
+		self::$triggers = null;
 	}
 
 	public static function has_one($name, $arguments = array())
@@ -81,6 +79,14 @@ class Phactory
 	public static function fixtures()
 	{
 		return isset(self::$fixtures) ? self::$fixtures : self::$fixtures = new Fixtures;
+	}
+
+	public function triggers($triggers=null)
+	{
+		if (is_object($triggers))
+			self::$triggers = new Triggers($triggers);
+
+		return isset(self::$triggers) ? self::$triggers : self::$triggers = new Triggers;
 	}
 
 	private static function resolve_args($args)

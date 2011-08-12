@@ -5,12 +5,14 @@ namespace Phactory;
 class Blueprint
 {
 	public $name;
+	public $type;
 	private $blueprint;
 	private $is_fixture;
 
-	public function __construct($name, $blueprint, $is_fixture=false)
+	public function __construct($name, $type, $blueprint, $is_fixture=false)
 	{
 		$this->name = $name;
+		$this->type = $type;
 		$this->blueprint = $blueprint;
 		$this->is_fixture = $is_fixture;
 	}

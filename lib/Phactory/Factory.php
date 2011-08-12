@@ -20,7 +20,7 @@ class Factory
 
 		$blueprint = array_merge($base, $variation, $override);
 
-		return new Blueprint($this->name, $blueprint, $this->is_fixture($type));
+		return new Blueprint($this->name, $type, $blueprint, $this->is_fixture($type));
 	}
 
 	private function get_variation($type)
@@ -32,7 +32,7 @@ class Factory
 		else if (method_exists($this->factory, $type))
 			return call_user_func(array($this->factory, $type));
 		else
-			throw new \BadMethodCallException("No such variation $type on ".get_class($this->factory));
+			throw new \BadMethodCallException("No such variation '$type' on ".get_class($this->factory));
 	}
 
 	private function is_fixture($type)
