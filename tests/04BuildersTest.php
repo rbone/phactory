@@ -24,7 +24,7 @@ class CakePhactory
 	}
 }
 
-class CustomBuilder extends \Phactory\DefaultBuilder
+class CustomBuilder extends \Phactory\Builder
 {
 	public function to_object($name, $blueprint)
 	{

@@ -4,7 +4,7 @@ use \Phactory\Blueprint;
 use \Phactory\HasOneRelationship;
 use \Phactory\BelongsToRelationship;
 use \Phactory\Dependancy;
-use \Phactory\DefaultBuilder;
+use \Phactory\Builder;
 use \Phactory\Loader;
 use \Phactory\Fixtures;
 use \Phactory\Triggers;
@@ -73,7 +73,7 @@ class Phactory
 		if (is_object($builder))
 			self::$builder = $builder;
 
-		return isset(self::$builder) ? self::$builder : self::$builder = new DefaultBuilder;
+		return isset(self::$builder) ? self::$builder : self::$builder = new Builder;
 	}
 
 	public static function fixtures()

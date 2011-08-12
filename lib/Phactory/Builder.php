@@ -6,7 +6,7 @@ use Phactory\HasOneRelationship;
 use Phactory\BelongsToRelationship;
 use Phactory\Dependancy;
 
-class DefaultBuilder
+class Builder
 {
 	private $count = array();
 
