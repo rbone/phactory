@@ -13,13 +13,13 @@ class Loader
 
 	public function load($name)
 	{
-		if (isset($this->factories[$name]))
-			return new $this->factories[$name];
-
 		$class = ucfirst($name)."Phactory";
-		if (class_exists($class))
-			return new $class;
 
-		throw new \Exception("Unknown factory '$name'");
+		if (!class_exists($class))
+			throw new \Exception("Unknown factory '$name'");
+
+		$factory = new Factory($name, new $class);
+
+		return $factory;
 	}
 }

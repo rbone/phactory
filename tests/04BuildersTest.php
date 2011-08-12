@@ -26,7 +26,7 @@ class CakePhactory
 
 class CustomBuilder extends \Phactory\DefaultBuilder
 {
-	public function toObject($name, $blueprint)
+	public function to_object($name, $blueprint)
 	{
 		$object = new CustomObject();
 		foreach ($blueprint as $attribute => $value)

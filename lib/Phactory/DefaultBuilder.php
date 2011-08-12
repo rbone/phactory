@@ -25,8 +25,6 @@ class DefaultBuilder
 				return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
 			else if ($value instanceof HasOneRelationship)
 				return $self->create($value->blueprint());
-			else if ($value instanceof BelongsToRelationship)
-				return $self->create($value->blueprint());
 			else
 				return $value;
 		}, $blueprint->values());
@@ -38,10 +36,10 @@ class DefaultBuilder
 			return $value;
 		}, $blueprint);
 
-		return $this->toObject($name, $blueprint);
+		return $this->to_object($name, $blueprint);
 	}
 
-	protected function toObject($name, $blueprint)
+	protected function to_object($name, $blueprint)
 	{
 		return (object)$blueprint;
 	}

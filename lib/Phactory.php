@@ -44,24 +44,16 @@ class Phactory
 
 		$blueprint = self::get_blueprint($name, $type, $override);
 
-		return self::builder()->create($blueprint);
+		$object = self::builder()->create($blueprint);
+
+		return $object;
 	}
 
 	public static function get_blueprint($name, $type, $override=array())
 	{
 		$factory = self::loader()->load($name);
 
-		$blueprint = $factory->blueprint();
-
-		if (!is_array($blueprint))
-			throw new Exception("Phactory $name:$type did not return an array as needed");
-
-		if ($type != 'blueprint')
-			$blueprint = array_merge($blueprint, $factory->$type(), $override);
-		else
-			$blueprint = array_merge($blueprint, $override);
-
-		return new Blueprint($name, $blueprint);
+		return $factory->create($type, $override);
 	}
 
 	private static function loader()
