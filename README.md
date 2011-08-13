@@ -50,9 +50,11 @@ echo $user->isadmin ? 'true' : 'false'; // 'true'
 ## What it doesn't do
 
 Phactory doesn't know about your database, it doesn't know about your domain model.
-This is by design, there's simply too many different ORM's out there, including many
-custom ones. However, you can easily implement support for your own ORM of choice, see
-the wiki documentation on builders for more information.
+This is by design, there's simply too many different ORM's out there to provide support for.
+However, you can easily implement support for your own ORM of choice, see the wiki
+documentation on builders for more information.
+
+Why do it this way? Simple because I wanted Phactory to return real objects, not database rows.
 
 ## Status
 
