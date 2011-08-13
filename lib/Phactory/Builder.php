@@ -2,10 +2,6 @@
 
 namespace Phactory;
 
-use Phactory\HasOneRelationship;
-use Phactory\BelongsToRelationship;
-use Phactory\Dependancy;
-
 class Builder
 {
 	private $count = array();
@@ -21,23 +17,26 @@ class Builder
 
 		$self = $this;
 
-		$blueprint = array_map(function ($value) use ($count, $self) {
-			if (is_string($value))
-				return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
-			else if ($value instanceof HasOneRelationship)
-				return $self->create($value->blueprint());
-			else
-				return $value;
-		}, $blueprint->values());
+		$values = $blueprint->values();
 
-		$blueprint = array_map(function ($value) use($blueprint) {
-			if ($value instanceof Dependancy && $value->met($blueprint))
-				return $value->meet($blueprint);
+		$strings = array_map(function($value) use ($count) {
+			return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
+		}, $blueprint->strings());
 
-			return $value;
-		}, $blueprint);
+		$relationships = array_map(function($value) use ($self) {
+			return $self->create($value->blueprint());
+		}, $blueprint->relationships());
 
-		$object = $this->to_object($name, $blueprint);
+		$values = array_merge($values, $strings, $relationships);
+
+		$dependencies = array_map(function ($value) use ($values) {
+			return $value->meet($values);
+		}, $blueprint->dependencies());
+
+		$values = array_merge($values, $dependencies);
+
+
+		$object = $this->to_object($name, $values);
 
 		\Phactory::triggers()->beforesave($name, $type, $object);
 
@@ -48,9 +47,9 @@ class Builder
 		return $object;
 	}
 
-	protected function to_object($name, $blueprint)
+	protected function to_object($name, $values)
 	{
-		return (object)$blueprint;
+		return (object)$values;
 	}
 
 	protected function save_object($name, $object)

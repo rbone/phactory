@@ -3,7 +3,7 @@
 use \Phactory\Blueprint;
 use \Phactory\HasOneRelationship;
 use \Phactory\BelongsToRelationship;
-use \Phactory\Dependancy;
+use \Phactory\Dependency;
 use \Phactory\Builder;
 use \Phactory\Loader;
 use \Phactory\Fixtures;
@@ -36,7 +36,7 @@ class Phactory
 
 	public function uses($dependancy)
 	{
-		return new Dependancy($dependancy);
+		return new Dependency($dependancy);
 	}
 
 	public static function __callStatic($name, $arguments = array())

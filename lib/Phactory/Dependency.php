@@ -2,14 +2,14 @@
 
 namespace Phactory;
 
-class Dependancy
+class Dependency
 {
 	private $class;
 	private $property;
 
-	public function __construct($dependancy)
+	public function __construct($dependency)
 	{
-		list($class, $property) = explode('.', $dependancy);
+		list($class, $property) = explode('.', $dependency);
 		$this->class = $class;
 		$this->property = $property;
 	}

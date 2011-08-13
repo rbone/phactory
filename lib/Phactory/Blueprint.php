@@ -2,6 +2,9 @@
 
 namespace Phactory;
 
+use Phactory\HasOneRelationship;
+use Phactory\Dependency;
+
 class Blueprint
 {
 	public $name;
@@ -19,7 +22,30 @@ class Blueprint
 
 	public function values()
 	{
-		return $this->blueprint;
+		return array_filter($this->blueprint, function($value) {
+			return !is_string($value) && !is_object($value);
+		});
+	}
+
+	public function strings()
+	{
+		return array_filter($this->blueprint, function($value) {
+			return is_string($value);
+		});
+	}
+
+	public function relationships()
+	{
+		return array_filter($this->blueprint, function($value) {
+			return $value instanceof HasOneRelationship;
+		});
+	}
+
+	public function dependencies()
+	{
+		return array_filter($this->blueprint, function($value) {
+			return $value instanceof Dependency;
+			});
 	}
 
 	public function is_fixture()
