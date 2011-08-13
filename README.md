@@ -39,9 +39,9 @@ $user = Phactory::user();
 echo $user->name == 'User 0001' ? 'true' : 'false'; // 'true'
 echo $user->activated ? 'true' : 'false'; // 'true'
 
-$admin = Phactory::user();
+$admin = Phactory::user('admin');
 
-echo $user->name == 'User 0001' ? 'true' : 'false'; // 'true'
+echo $user->name == 'User 0002' ? 'true' : 'false'; // 'true'
 echo $user->activated ? 'true' : 'false'; // 'true'
 echo $user->isadmin ? 'true' : 'false'; // 'true'
 
