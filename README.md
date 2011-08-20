@@ -49,16 +49,37 @@ echo $user->isadmin ? 'true' : 'false'; // 'true'
 
 ## What it doesn't do
 
-Phactory doesn't know about your database, it doesn't know about your domain model.
-This is by design, there's simply too many different ORM's out there to provide support for.
-However, you can easily implement support for your own ORM of choice, see the wiki
-documentation on builders for more information.
+Phactory doesn't know about your database or ORM, this is by design. Rather than trying
+to support every ORM out there Phactory is designer to be easily extended to support
+whatever it needs to. e.g. using our above UserPhactory
 
-Why do it this way? Simple because I wanted Phactory to return real objects, not database rows.
+```php
+<?php
+
+class User {}
+
+class MyCustomBuilder extends \Phactory\Builder
+{
+	protected function to_object($name, $values)
+	{
+		$object = new $name;
+
+		foreach ($values as $key => $value)
+			$object->$key = $value;
+
+		return $object;
+	}
+}
+
+$user = Phactory::user();
+
+echo get_class($user); // 'User'
+
+```
 
 ## Status
 
-v1.0. Solid test coverage is in place, just type `phpunit` within your phactory directory.
+v1.1. Solid test coverage is in place, just type `phpunit` within your phactory directory.
 
 ## Installing
 
