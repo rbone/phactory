@@ -17,10 +17,8 @@ class HasOneRelationship
 		$this->override = $override;
 	}
 
-	public function blueprint()
+	public function create()
 	{
-		$blueprint = Phactory::get_blueprint($this->name, $this->type, $this->override);
-
-		return $blueprint;
+		return Phactory::create_blueprint($this->name, $this->type, $this->override);
 	}
 }

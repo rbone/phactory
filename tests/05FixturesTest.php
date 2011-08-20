@@ -9,6 +9,14 @@ class FixturesTest extends PHPUnit_Framework_TestCase
 
 		$this->assertSame($one, $two);
 	}
+
+	public function testFixturesWorkWithRelationships()
+	{
+		$one = Phactory::project();
+		$two = Phactory::project();
+
+		$this->assertSame($one->category, $two->category);
+	}
 }
 
 class CategoryPhactory
@@ -26,6 +34,17 @@ class CategoryPhactory
 		return array(
 			'name' => "T-shirt's",
 			'type' => 'tshirt',
+		);
+	}
+}
+
+class ProjectPhactory
+{
+	public function blueprint()
+	{
+		return array(
+			'title' => 'project #{sn}',
+			'category' => Phactory::has_one('category', 'tshirt'),
 		);
 	}
 }

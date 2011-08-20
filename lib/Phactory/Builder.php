@@ -23,8 +23,8 @@ class Builder
 			return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
 		}, $blueprint->strings());
 
-		$relationships = array_map(function($value) use ($self) {
-			return $self->create($value->blueprint());
+		$relationships = array_map(function($value) {
+			return $value->create();
 		}, $blueprint->relationships());
 
 		$values = array_merge($values, $strings, $relationships);

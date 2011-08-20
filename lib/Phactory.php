@@ -43,6 +43,11 @@ class Phactory
 	{
 		list($type, $override) = self::resolve_args($arguments);
 
+		return self::create_blueprint($name, $type, $override);
+	}
+
+	public function create_blueprint($name, $type, $override=array())
+	{
 		if (self::fixtures()->has_fixture($name, $type))
 			return self::fixtures()->get_fixture($name, $type);
 

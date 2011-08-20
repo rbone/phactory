@@ -50,7 +50,7 @@ echo $user->isadmin ? 'true' : 'false'; // 'true'
 ## What it doesn't do
 
 Phactory doesn't know about your database or ORM, this is by design. Rather than trying
-to support every ORM out there Phactory is designer to be easily extended to support
+to support every ORM out there Phactory is designed to be easily extended to support
 whatever it needs to. e.g. using our above UserPhactory
 
 ```php
@@ -79,7 +79,7 @@ echo get_class($user); // 'User'
 
 ## Status
 
-v1.1. Solid test coverage is in place, just type `phpunit` within your phactory directory.
+v1.1.1 Solid test coverage is in place, just type `phpunit` within your phactory directory.
 
 ## Installing
 
