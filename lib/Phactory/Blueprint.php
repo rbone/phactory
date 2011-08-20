@@ -23,7 +23,9 @@ class Blueprint
 	public function values()
 	{
 		return array_filter($this->blueprint, function($value) {
-			return !is_string($value) && !is_object($value);
+			return !is_string($value)
+				&& !$value instanceof HasOneRelationship
+				&& !$value instanceof Dependency;
 		});
 	}
 

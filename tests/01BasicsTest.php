@@ -44,12 +44,18 @@ class BasicsTest extends PHPUnit_Framework_TestCase
 	{
 		$user = Phactory::user(array(
 			'last_name' => 'Blarg#{sn}',
+			'address' => (object)array(
+				'street' => 'Sesame St.',
+			)
 		));
 
 		$this->assertEquals($user, (object)array(
 			'first_name' => 'Fronzel',
 			'last_name' => 'Blarg0001',
 			'email' => 'user0001@example.org',
+			'address' => (object)array(
+				'street' => 'Sesame St.',
+			)
 		));
 
 		$admin = Phactory::user('admin', array(
