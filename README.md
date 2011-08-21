@@ -1,6 +1,7 @@
 # Phactory
 
-A simple PHP library for creating data for tests.
+A PHP library for creating data for tests. Designed for simplicity
+and extensibility.
 
 ## Usage
 
@@ -36,16 +37,19 @@ Then use them:
 
 $user = Phactory::user();
 
-echo $user->name == 'User 0001' ? 'true' : 'false'; // 'true'
+echo $user->name; // 'User 0001'
 echo $user->activated ? 'true' : 'false'; // 'true'
 
 $admin = Phactory::user('admin');
 
-echo $user->name == 'User 0002' ? 'true' : 'false'; // 'true'
+echo $user->name; // 'User 0002'
 echo $user->activated ? 'true' : 'false'; // 'true'
 echo $user->isadmin ? 'true' : 'false'; // 'true'
 
 ```
+
+That's just the basics of what Phactory allows you to do, fixtures, dependencies
+and relationships are also supported, read the wiki documentation for more information.
 
 ## What it doesn't do
 
@@ -70,6 +74,8 @@ class MyCustomBuilder extends \Phactory\Builder
 		return $object;
 	}
 }
+
+Phactory::builder(new MyCustomBuilder);
 
 $user = Phactory::user();
 
