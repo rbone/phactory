@@ -34,7 +34,7 @@ class Phactory
 		return new HasOneRelationship($name, $type, $override);
 	}
 
-	public function uses($dependancy)
+	public static function uses($dependancy)
 	{
 		return new Dependency($dependancy);
 	}
@@ -46,7 +46,7 @@ class Phactory
 		return self::create_blueprint($name, $type, $override);
 	}
 
-	public function create_blueprint($name, $type, $override=array())
+	public static function create_blueprint($name, $type, $override=array())
 	{
 		if (self::fixtures()->has_fixture($name, $type))
 			return self::fixtures()->get_fixture($name, $type);
@@ -86,7 +86,7 @@ class Phactory
 		return isset(self::$fixtures) ? self::$fixtures : self::$fixtures = new Fixtures;
 	}
 
-	public function triggers($triggers=null)
+	public static function triggers($triggers=null)
 	{
 		if (is_object($triggers))
 			self::$triggers = new Triggers($triggers);
