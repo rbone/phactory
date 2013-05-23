@@ -85,9 +85,24 @@ echo get_class($user); // 'User'
 
 ## Status
 
-v1.1.1 Solid test coverage is in place, just type `phpunit` within your phactory directory.
+Up to v1.1.2
+
+[![Build Status](https://travis-ci.org/rbone/phactory.png?branch=master)](https://travis-ci.org/rbone/phactory)
 
 ## Installing
+
+Via composer:
+
+```js
+{
+  "require-dev": {
+    "rbone/phactory": "1.1.*"
+  }
+}
+
+```
+
+Via GIT:
 
 ```
 git clone git://github.com/rbone/phactory.git
