@@ -68,8 +68,11 @@ class Phactory
 		return $factory->create($type, $override);
 	}
 
-	private static function loader()
+	public static function loader($loader=null)
 	{
+		if (is_object($loader))
+			self::$loader = $loader;
+
 		return isset(self::$loader) ? self::$loader : self::$loader = new Loader;
 	}
 
