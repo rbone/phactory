@@ -1,0 +1,27 @@
+{
+    "name": "rbone/phactory",
+    "description": "A PHP library for generating data for tests",
+    "keywords": ["test", "data"],
+    "homepage": "https://github.com/rbone/phactory",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Richard Bone", "email": "rjonbone@gmail.com"
+      }
+    ],
+    "support": {
+      "email": "rjonbone@gmail.com",
+      "issues": "https://github.com/rbone/phactory/issues",
+      "wiki": "https://github.com/rbone/phactory/wiki",
+      "source": "https://github.com/rbone/phactory"
+    },
+    "require": {
+      "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.10"
+    },
+    "autoload": {
+      "psr-0": { "Phactory": "lib" }
+    }
+}
