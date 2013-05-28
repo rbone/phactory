@@ -29,12 +29,10 @@ class Builder
 
 		$values = array_merge($values, $strings, $relationships);
 
-		$dependencies = array_map(function ($value) use ($values) {
-			return $value->meet($values);
-		}, $blueprint->dependencies());
-
-		$values = array_merge($values, $dependencies);
-
+		foreach ($blueprint->dependencies() as $key => $dep)
+		{
+			$values[$key] = $dep->meet($values);
+		}
 
 		$object = $this->to_object($name, $values);
 
