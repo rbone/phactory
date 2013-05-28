@@ -30,7 +30,11 @@ class Dependency
 		elseif (is_object($subject) && isset($subject->$part))
 			$value = $subject->$part;
 		else
-			throw new \Exception("");
+			throw new \Exception(sprintf(
+				"Can't find %s in %s",
+				$part,
+				is_object($subject) ? get_class($subject) : gettype($subject)
+			));
 
 		if (count($parts) == 0)
 			return $value;
