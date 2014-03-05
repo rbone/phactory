@@ -1,5 +1,7 @@
 # Phactory
 
+[(ver documentação em português)](docs/pt-BR/README.md)
+
 A PHP library for creating data for tests. Designed for simplicity
 and extensibility.
 
