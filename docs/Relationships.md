@@ -11,7 +11,7 @@ class BookPhactory
     {
         return array(
             'title' => 'Food goes in here',
-            'author' => Phactory::has_one('author'),
+            'author' => Phactory::hasOne('author'),
         );
     }
 }
@@ -28,6 +28,6 @@ class AuthorPhactory
 
 ```
 
-As you can see implementing a relationship is just as easy as writing `Phactory::has_one('type')`. 
+As you can see implementing a relationship is just as easy as writing `Phactory::hasOne('type')`. 
 All of the usual features of Phactory are available to relationships as well, variations and overrides
 may be used by passing in a second or third argument.

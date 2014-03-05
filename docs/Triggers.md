@@ -16,7 +16,7 @@ class UserPhactory
         );
     }
 
-    public function system_fixture()
+    public function systemFixture()
     {
         return array(
             'fullname' => 'System User',
@@ -44,7 +44,7 @@ class MyFrameworksTrigger
 {
     private $sequences_incremented = false;
 
-    public function user_beforesave($user)
+    public function userBeforeSave($user)
     {
         if (!$this->sequences_incremented)
         {
@@ -54,7 +54,7 @@ class MyFrameworksTrigger
         }
     }
 
-    public function user_system_aftersave($user)
+    public function userSystemAfterSave($user)
     {
         Db()->execute(
             'UPDATE user SET userid = 1 WHERE userid = ?',

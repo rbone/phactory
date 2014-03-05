@@ -52,7 +52,7 @@ the same instance every time, you'd need to change this:
 class CategoryPhactory
 {
     ...
-    public function tshirt_fixture()
+    public function tshirtFixture()
     {
         return array(
             'title' => 'T-shirt Category',
@@ -77,6 +77,6 @@ echo $one === $two ? 'same object' : 'different objects';
 
 ```
 
-All that we've done is append _fixture to the tshirt method, but now it will always return the
+All that we've done is append Fixture to the tshirt method, but now it will always return the
 same instance every time. Note that this only works on blueprint variations, if you were to define
-`blueprint_fixture` method all that would happen is your Phactory wouldn't work.
+`blueprintFixture` method all that would happen is your Phactory wouldn't work.

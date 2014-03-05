@@ -64,12 +64,13 @@ class User {}
 
 class MyCustomBuilder extends \Phactory\Builder
 {
-	protected function to_object($name, $values)
+	protected function toObject($name, $values)
 	{
 		$object = new $name;
 
-		foreach ($values as $key => $value)
-			$object->$key = $value;
+		foreach ($values as $key => $value) {
+            $object->$key = $value;
+        }
 
 		return $object;
 	}

@@ -11,12 +11,13 @@ First create your own builder class like so:
 
 class CustomBuilder extends \Phactory\DefaultBuilder
 {
-    protected function to_object($name, $blueprint)
+    protected function toObject($name, $blueprint)
     {
         $object = new CustomObject($name);
 
-        foreach ($blueprint as $key => $value)
+        foreach ($blueprint as $key => $value) {
             $object->$key = $value;
+        }
         
         return $object;
     }

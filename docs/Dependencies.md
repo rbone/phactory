@@ -10,8 +10,8 @@ class PublisherPhactory
     public function blueprint()
     {
         return array(
-            'creator' => Phactory::has_one('user'),
-            'book' => Phactory::has_one('book'),
+            'creator' => Phactory::hasOne('user'),
+            'book' => Phactory::hasOne('book'),
         );
     }
 
@@ -28,7 +28,7 @@ class BookPhactory
     public function blueprint()
     {
         return array(
-            'author' => Phactory::has_one('user'),
+            'author' => Phactory::hasOne('user'),
         );
     }
 }
