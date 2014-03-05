@@ -23,6 +23,6 @@ class Fixtures
 
 	public function is_fixture()
 	{
-		return preg_match('\w*_fixture', $type);
+		return preg_match('\w*Fixture', $type);
 	}
 }

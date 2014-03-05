@@ -4,32 +4,42 @@ namespace Phactory;
 
 class Triggers
 {
-	private $triggers;
+    private $triggers;
 
-	public function __construct($triggers=null)
-	{
-		$this->triggers = $triggers;
-	}
+    public function __construct($triggers = null)
+    {
+        $this->triggers = $triggers;
+    }
 
-	public function beforesave($name, $type, $object)
-	{
-		$this->event($name, $type, $object, 'beforesave');
-	}
+    public function beforeSave($name, $type, $object)
+    {
+        $this->event($name, $type, $object, 'beforeSave');
+    }
 
-	public function aftersave($name, $type, $object)
-	{
-		$this->event($name, $type, $object, 'aftersave');
-	}
+    public function afterSave($name, $type, $object)
+    {
+        $this->event($name, $type, $object, 'afterSave');
+    }
 
-	protected function event($name, $type, $object, $event)
-	{
-		if (is_null($this->triggers))
-			return;
+    protected function event($name, $type, $object, $event)
+    {
+        if (is_null($this->triggers)) {
+            return;
+        }
+        
+        $event = ucfirst($event);
 
-		if (method_exists($this->triggers, "{$name}_{$event}"))
-			call_user_func(array($this->triggers, "{$name}_{$event}"), $object);
+        if (method_exists($this->triggers, "{$name}{$event}")) {
+            call_user_func(array($this->triggers, "{$name}{$event}"), $object);
+        }
+        
+        if ($type) {
+            
+            $type = ucfirst($type);
 
-		if ($type && method_exists($this->triggers, "{$name}_{$type}_{$event}"))
-			call_user_func(array($this->triggers, "{$name}_{$type}_{$event}"), $object);
-	}
+            if (method_exists($this->triggers, "{$name}{$type}{$event}")) {
+                call_user_func(array($this->triggers, "{$name}{$type}{$event}"), $object);
+            }
+        }
+    }
 }

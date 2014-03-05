@@ -36,18 +36,18 @@ class Builder
 		$values = array_merge($values, $dependencies);
 
 
-		$object = $this->to_object($name, $values);
+		$object = $this->toObject($name, $values);
 
-		\Phactory::triggers()->beforesave($name, $type, $object);
+		\Phactory::triggers()->beforeSave($name, $type, $object);
 
 		$object = $this->save_object($name, $object);
 
-		\Phactory::triggers()->aftersave($name, $type, $object);
+		\Phactory::triggers()->afterSave($name, $type, $object);
 
 		return $object;
 	}
 
-	protected function to_object($name, $values)
+	protected function toObject($name, $values)
 	{
 		return (object)$values;
 	}

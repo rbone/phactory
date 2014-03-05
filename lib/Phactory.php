@@ -24,7 +24,7 @@ class Phactory
 		self::$triggers = null;
 	}
 
-	public static function has_one($name, $arguments = array())
+	public static function hasOne($name, $arguments = array())
 	{
 		$arguments = func_get_args();
 		array_shift($arguments);
