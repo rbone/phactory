@@ -86,12 +86,6 @@ echo get_class($user); // 'User'
 
 ```
 
-## Status
-
-Up to v1.1.4
-
-[![Build Status](https://travis-ci.org/rbone/phactory.png?branch=master)](https://travis-ci.org/rbone/phactory)
-
 ## Installing
 
 Via composer:
@@ -99,7 +93,7 @@ Via composer:
 ```js
 {
   "require-dev": {
-    "rbone/phactory": "1.1.*"
+    "alanwillms/phactory": "1.2.*"
   }
 }
 
@@ -108,7 +102,7 @@ Via composer:
 Via GIT:
 
 ```
-git clone git://github.com/rbone/phactory.git
+git clone git://github.com/alanwillms/phactory.git
 
 <?php
 

@@ -1,19 +1,22 @@
 {
-    "name": "rbone/phactory",
+    "name": "alanwillms/phactory",
     "description": "A PHP library for generating data for tests",
     "keywords": ["test", "data"],
-    "homepage": "https://github.com/rbone/phactory",
+    "homepage": "https://github.com/alanwillms/phactory",
     "license": "MIT",
     "authors": [
       {
         "name": "Richard Bone", "email": "rjonbone@gmail.com"
+      },
+      {
+        "name": "Alan Willms", "email": "dyulax@gmail.com"
       }
     ],
     "support": {
-      "email": "rjonbone@gmail.com",
-      "issues": "https://github.com/rbone/phactory/issues",
-      "wiki": "https://github.com/rbone/phactory/wiki",
-      "source": "https://github.com/rbone/phactory"
+      "email": "dyulax@gmail.com",
+      "issues": "https://github.com/alanwillms/phactory/issues",
+      "wiki": "https://github.com/alanwillms/phactory/wiki",
+      "source": "https://github.com/alanwillms/phactory"
     },
     "require": {
       "php": ">=5.3"
