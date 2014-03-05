@@ -26,15 +26,15 @@ class Triggers
         if (is_null($this->triggers)) {
             return;
         }
-        
+
         $event = ucfirst($event);
 
         if (method_exists($this->triggers, "{$name}{$event}")) {
             call_user_func(array($this->triggers, "{$name}{$event}"), $object);
         }
-        
+
         if ($type) {
-            
+
             $type = ucfirst($type);
 
             if (method_exists($this->triggers, "{$name}{$type}{$event}")) {
