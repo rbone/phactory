@@ -71,7 +71,7 @@ And is registered via:
 ```php
 <?php
 
-Phactory::trigger(new MyFrameworksTrigger);
+Phactory::triggers(new MyFrameworksTrigger);
 
 ```
 
