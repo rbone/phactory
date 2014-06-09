@@ -12,6 +12,7 @@
     <whitelist>
       <directory>./</directory>
       <exclude>
+        <file>./bootstrap.php</file>
         <directory>./tests</directory>
         <directory>./vendor</directory>
       </exclude>
