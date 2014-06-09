@@ -7,13 +7,39 @@ use \Phactory\Loader;
 use \Phactory\Fixtures;
 use \Phactory\Triggers;
 
+/**
+ * Base Phactory class.
+ * @see https://github.com/alanwillms/phactory/tree/master/docs
+ */
 class Phactory
 {
+    /**
+     * Factory loader
+     * @var object
+     */
     private static $loader;
+
+    /**
+     * Object builder
+     * @var object
+     */
     private static $builder;
+
+    /**
+     * Fixtures collection
+     * @var object
+     */
     private static $fixtures;
+
+    /**
+     * Triggers caller
+     * @var object
+     */
     private static $triggers;
 
+    /**
+     * Reset all Phactory settings to default
+     */
     public static function reset()
     {
         self::$loader = null;
@@ -22,6 +48,13 @@ class Phactory
         self::$triggers = null;
     }
 
+    /**
+     * Define an attribute that requires another factory generated object
+     * @param string $name factory name
+     * @param string $type (OPTIONAL) variation or fixture name
+     * @param array $override (OPTIONAL) attribute values to be overriden
+     * @return \Phactory\HasOneRelationship
+     */
     public static function hasOne($name, $arguments = array())
     {
         $arguments = func_get_args();
@@ -32,11 +65,26 @@ class Phactory
         return new HasOneRelationship($name, $type, $override);
     }
 
+    /**
+     * Define an attribute dependency on another factory generated object which
+     * must be the same for both objects. I.e., comment.author must be the same
+     * as comment.topic.author if you are creating the topic first comment.
+     * @param string $dependancy dependency path, i.e., "topic.author"
+     * @return \Phactory\Dependency
+     */
     public static function uses($dependancy)
     {
         return new Dependency($dependancy);
     }
 
+    /**
+     * Undefined static methods calls will try to load factory objects.
+     * For example, the method "Phactory::user()" is not defined, so the class
+     * will try to load an user factory and return an user object.
+     * @param string $name method name, which will map to a factory name
+     * @param array $arguments
+     * @return type
+     */
     public static function __callStatic($name, $arguments = array())
     {
         list($type, $override) = self::resolveArgs($arguments);
@@ -44,6 +92,13 @@ class Phactory
         return self::createBlueprint($name, $type, $override);
     }
 
+    /**
+     * Loads, prepare, persist and return a factory generated object
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param array $override overriden attributes values
+     * @return object|array
+     */
     public static function createBlueprint($name, $type, $override = array())
     {
         if (self::fixtures()->hasFixture($name, $type)) {
@@ -61,6 +116,13 @@ class Phactory
         return $object;
     }
 
+    /**
+     * Returns an object blueprint
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param array $override overriden attributes values
+     * @return \Phactory\Blueprint
+     */
     public static function getBlueprint($name, $type, $override = array())
     {
         $factory = self::loader()->load($name);
@@ -68,6 +130,11 @@ class Phactory
         return $factory->create($type, $override);
     }
 
+    /**
+     * Get factory loader. If it is not defined, it will be set.
+     * @param object|null $loader
+     * @return \Phactory\Loader
+     */
     public static function loader($loader = null)
     {
         if (is_object($loader)) {
@@ -77,6 +144,11 @@ class Phactory
         return isset(self::$loader) ? self::$loader : self::$loader = new Loader;
     }
 
+    /**
+     * Get object builder. If it is not defined, it will be set.
+     * @param object|null $builder
+     * @return \Phactory\Builder
+     */
     public static function builder($builder = null)
     {
         if (is_object($builder)) {
@@ -86,11 +158,20 @@ class Phactory
         return isset(self::$builder) ? self::$builder : self::$builder = new Builder;
     }
 
+    /**
+     * Get fixtures manager. If it is not defined, it will be set.
+     * @return \Phactory\Fixtures
+     */
     public static function fixtures()
     {
         return isset(self::$fixtures) ? self::$fixtures : self::$fixtures = new Fixtures;
     }
 
+    /**
+     * Get triggers events caller. If it is not defined, it will be set.
+     * @param object|null $triggers
+     * @return \Phactory\Triggers
+     */
     public static function triggers($triggers = null)
     {
         if (is_object($triggers)) {
@@ -100,6 +181,17 @@ class Phactory
         return isset(self::$triggers) ? self::$triggers : self::$triggers = new Triggers;
     }
 
+    /**
+     * Resolve factory arguments. For example:
+     * <code>
+     * Phactory::user(); // will return array('blueprint', array())
+     * Phactory::user('admin'); // will return array('admin', array())
+     * Phactory::user(array('name' => 'Karl')); // will return array('blueprint', array('name' => 'Karl'))
+     * Phactory::user('admin', array('name' => 'Karl')); // will return array('admin', array('name' => 'Karl'))
+     * </code>
+     * @param array $args arguments
+     * @return array
+     */
     private static function resolveArgs($args)
     {
         $type = 'blueprint';
@@ -114,7 +206,6 @@ class Phactory
             } elseif (is_array($args[0])) {
                 $override = $args[0];
             }
-                
         }
 
         return array($type, $override);

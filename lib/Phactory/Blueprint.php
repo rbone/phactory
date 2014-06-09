@@ -5,13 +5,41 @@ namespace Phactory;
 use Phactory\HasOneRelationship;
 use Phactory\Dependency;
 
+/**
+ * Represents the blueprint of an object
+ */
 class Blueprint
 {
+    /**
+     * Factory name
+     * @var string
+     */
     public $name;
+
+    /**
+     * Variation applied
+     * @var string
+     */
     public $type;
+
+    /**
+     * Blueprint data (may have a variation applied)
+     * @var array
+     */
     private $blueprint;
+
+    /**
+     * @var boolean
+     */
     private $isFixture;
 
+    /**
+     * Constructor
+     * @param string $name name of the factory, i.e., "user" in Phactory::user()
+     * @param string $type variation, i.e. "admin" in Phactory::user('admin')
+     * @param array $blueprint blueprint for the given variation
+     * @param boolean $isFixture
+     */
     public function __construct($name, $type, $blueprint, $isFixture = false)
     {
         $this->name = $name;
@@ -20,6 +48,10 @@ class Blueprint
         $this->isFixture = $isFixture;
     }
 
+    /**
+     * Return current blueprint values, including dependencies and relationships
+     * @return array
+     */
     public function values()
     {
         return array_filter($this->blueprint, function ($value) {
@@ -27,6 +59,10 @@ class Blueprint
         });
     }
 
+    /**
+     *  Return current blueprint values, only strings
+     * @return array
+     */
     public function strings()
     {
         return array_filter($this->blueprint, function ($value) {
@@ -34,6 +70,10 @@ class Blueprint
         });
     }
 
+    /**
+     * Return current blueprint values, only relationshops
+     * @return HasOneRelationship[]
+     */
     public function relationships()
     {
         return array_filter($this->blueprint, function ($value) {
@@ -41,6 +81,10 @@ class Blueprint
         });
     }
 
+    /**
+     * Return current blueprint values, only dependencies
+     * @return Dependency[]
+     */
     public function dependencies()
     {
         return array_filter($this->blueprint, function ($value) {
@@ -48,6 +92,10 @@ class Blueprint
         });
     }
 
+    /**
+     * Wether this is a fixture or not
+     * @return type
+     */
     public function isFixture()
     {
         return $this->isFixture;
