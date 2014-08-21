@@ -93,7 +93,7 @@ Via composer:
 ```js
 {
   "require-dev": {
-    "alanwillms/phactory": "1.2.*"
+    "rbone/phactory": "1.1.*"
   }
 }
 
@@ -102,7 +102,7 @@ Via composer:
 Via GIT:
 
 ```
-git clone git://github.com/alanwillms/phactory.git
+git clone git://github.com/rbone/phactory.git
 
 <?php
 
