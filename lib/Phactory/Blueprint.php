@@ -94,9 +94,19 @@ class Blueprint
 
     /**
      * Wether this is a fixture or not
-     * @return type
+     * @return boolean
      */
     public function isFixture()
+    {
+        return $this->isFixture;
+    }
+
+    /**
+     * Wether this is a fixture or not
+     * @return boolean
+     * @deprecated Backwards compatibility
+     */
+    public function is_fixture()
     {
         return $this->isFixture;
     }

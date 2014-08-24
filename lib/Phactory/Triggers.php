@@ -59,8 +59,12 @@ class Triggers
 
         $event = ucfirst($event);
 
+        $deprecatedEvent = strtolower($event); // @deprecated Backwards compatibility
+
         if (method_exists($this->triggers, "{$name}{$event}")) {
             call_user_func(array($this->triggers, "{$name}{$event}"), $object);
+        } elseif (method_exists($this->triggers, "{$name}_{$deprecatedEvent}")) { // @deprecated Backwards compatibility
+            call_user_func(array($this->triggers, "{$name}_{$deprecatedEvent}"), $object);
         }
 
         if ($type) {
@@ -69,7 +73,33 @@ class Triggers
 
             if (method_exists($this->triggers, "{$name}{$type}{$event}")) {
                 call_user_func(array($this->triggers, "{$name}{$type}{$event}"), $object);
+            } elseif (method_exists($this->triggers, "{$name}_{$type}_{$deprecatedEvent}")) { // @deprecated Backwards compatibility
+                call_user_func(array($this->triggers, "{$name}_{$type}_{$deprecatedEvent}"), $object);
             }
         }
+    }
+
+    /**
+     * Execute triggers before saving
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param object|array $object
+     * @deprecated Backwards compatibility
+     */
+    public function before_save($name, $type, $object)
+    {
+        return $this->beforeSave($name, $type, $object);
+    }
+
+    /**
+     * Execute triggers after saving
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param object|array $object
+     * @deprecated Backwards compatibility
+     */
+    public function after_save($name, $type, $object)
+    {
+        return $this->afterSave($name, $type, $object);
     }
 }

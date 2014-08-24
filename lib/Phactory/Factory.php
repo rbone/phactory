@@ -58,6 +58,8 @@ class Factory
             return array();
         } elseif (method_exists($this->factory, "{$type}Fixture")) {
             return call_user_func(array($this->factory, "{$type}Fixture"));
+        } elseif (method_exists($this->factory, "{$type}_fixture")) { // @deprecated Backwards compatibility
+            return call_user_func(array($this->factory, "{$type}_fixture"));
         } elseif (method_exists($this->factory, $type)) {
             return call_user_func(array($this->factory, $type));
         } else {
@@ -72,6 +74,9 @@ class Factory
      */
     private function isFixture($type)
     {
+        if (method_exists($this->factory, "{$type}_fixture")) { // @deprecated Backwards compatibility
+            return true;
+        }
         return method_exists($this->factory, "{$type}Fixture");
     }
 }

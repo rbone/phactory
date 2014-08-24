@@ -48,11 +48,13 @@ class Builder
 
         $values = array_merge($values, $dependencies);
 
-        $object = $this->toObject($name, $values);
+        //$object = $this->toObject($name, $values);
+        $object = $this->to_object($name, $values); // @deprecated Backwards compatibility
 
         \Phactory::triggers()->beforeSave($name, $type, $object);
 
-        $object = $this->saveObject($name, $object);
+        //$object = $this->saveObject($name, $object);
+        $object = $this->save_object($name, $object); // @deprecated Backwards compatibility
 
         \Phactory::triggers()->afterSave($name, $type, $object);
 
@@ -79,5 +81,29 @@ class Builder
     protected function saveObject($name, $object)
     {
         return $object;
+    }
+
+    /**
+     * Convert an array into an object
+     * @param string $name factory name
+     * @param array $values attributes values
+     * @return object
+     * @deprecated Backwards compatibility
+     */
+    protected function to_object($name, $values)
+    {
+        return $this->toObject($name, $values);
+    }
+
+    /**
+     * Persist an object
+     * @param string $name factory name
+     * @param object $object object
+     * @return object
+     * @deprecated Backwards compatibility
+     */
+    protected function save_object($name, $object)
+    {
+        return $this->saveObject($name, $object);
     }
 }

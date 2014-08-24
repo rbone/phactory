@@ -210,4 +210,60 @@ class Phactory
 
         return array($type, $override);
     }
+
+    /**
+     * Define an attribute that requires another factory generated object
+     * @param string $name factory name
+     * @param string $type (OPTIONAL) variation or fixture name
+     * @param array $override (OPTIONAL) attribute values to be overriden
+     * @return \Phactory\HasOneRelationship
+     * @deprecated Backwards compatibility
+     */
+    public static function has_one()
+    {
+        return call_user_func_array('Phactory::hasOne', func_get_args());
+    }
+
+    /**
+     * Loads, prepare, persist and return a factory generated object
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param array $override overriden attributes values
+     * @return object|array
+     * @deprecated Backwards compatibility
+     */
+    public static function create_blueprint($name, $type, $override = array())
+    {
+        return call_user_func_array('Phactory::createBlueprint', func_get_args());
+    }
+
+    /**
+     * Returns an object blueprint
+     * @param string $name factory name
+     * @param string $type variation or fixture name
+     * @param array $override overriden attributes values
+     * @return \Phactory\Blueprint
+     * @deprecated Backwards compatibility
+     */
+    public static function get_blueprint($name, $type, $override = array())
+    {
+        return call_user_func_array('Phactory::getBlueprint', func_get_args());
+    }
+
+    /**
+     * Resolve factory arguments. For example:
+     * <code>
+     * Phactory::user(); // will return array('blueprint', array())
+     * Phactory::user('admin'); // will return array('admin', array())
+     * Phactory::user(array('name' => 'Karl')); // will return array('blueprint', array('name' => 'Karl'))
+     * Phactory::user('admin', array('name' => 'Karl')); // will return array('admin', array('name' => 'Karl'))
+     * </code>
+     * @param array $args arguments
+     * @return array
+     * @deprecated Backwards compatibility
+     */
+    private static function resolve_args($args)
+    {
+        return call_user_func_array('Phactory::resolveArgs', func_get_args());
+    }
 }
