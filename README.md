@@ -86,6 +86,12 @@ echo get_class($user); // 'User'
 
 ```
 
+## Status
+
+Up to v1.1.4
+
+[![Build Status](https://travis-ci.org/rbone/phactory.png?branch=master)](https://travis-ci.org/rbone/phactory)
+
 ## Installing
 
 Via composer:
