@@ -5,53 +5,109 @@ namespace Phactory;
 use Phactory\HasOneRelationship;
 use Phactory\Dependency;
 
+/**
+ * Represents the blueprint of an object
+ */
 class Blueprint
 {
-	public $name;
-	public $type;
-	private $blueprint;
-	private $is_fixture;
+    /**
+     * Factory name
+     * @var string
+     */
+    public $name;
 
-	public function __construct($name, $type, $blueprint, $is_fixture=false)
-	{
-		$this->name = $name;
-		$this->type = $type;
-		$this->blueprint = $blueprint;
-		$this->is_fixture = $is_fixture;
-	}
+    /**
+     * Variation applied
+     * @var string
+     */
+    public $type;
 
-	public function values()
-	{
-		return array_filter($this->blueprint, function($value) {
-			return !is_string($value)
-				&& !$value instanceof HasOneRelationship
-				&& !$value instanceof Dependency;
-		});
-	}
+    /**
+     * Blueprint data (may have a variation applied)
+     * @var array
+     */
+    private $blueprint;
 
-	public function strings()
-	{
-		return array_filter($this->blueprint, function($value) {
-			return is_string($value);
-		});
-	}
+    /**
+     * @var boolean
+     */
+    private $isFixture;
 
-	public function relationships()
-	{
-		return array_filter($this->blueprint, function($value) {
-			return $value instanceof HasOneRelationship;
-		});
-	}
+    /**
+     * Constructor
+     * @param string $name name of the factory, i.e., "user" in Phactory::user()
+     * @param string $type variation, i.e. "admin" in Phactory::user('admin')
+     * @param array $blueprint blueprint for the given variation
+     * @param boolean $isFixture
+     */
+    public function __construct($name, $type, $blueprint, $isFixture = false)
+    {
+        $this->name = $name;
+        $this->type = $type;
+        $this->blueprint = $blueprint;
+        $this->isFixture = $isFixture;
+    }
 
-	public function dependencies()
-	{
-		return array_filter($this->blueprint, function($value) {
-			return $value instanceof Dependency;
-			});
-	}
+    /**
+     * Return current blueprint values, including dependencies and relationships
+     * @return array
+     */
+    public function values()
+    {
+        return array_filter($this->blueprint, function ($value) {
+            return !is_string($value) && !$value instanceof HasOneRelationship && !$value instanceof Dependency;
+        });
+    }
 
-	public function is_fixture()
-	{
-		return $this->is_fixture;
-	}
+    /**
+     *  Return current blueprint values, only strings
+     * @return array
+     */
+    public function strings()
+    {
+        return array_filter($this->blueprint, function ($value) {
+            return is_string($value);
+        });
+    }
+
+    /**
+     * Return current blueprint values, only relationshops
+     * @return HasOneRelationship[]
+     */
+    public function relationships()
+    {
+        return array_filter($this->blueprint, function ($value) {
+            return $value instanceof HasOneRelationship;
+        });
+    }
+
+    /**
+     * Return current blueprint values, only dependencies
+     * @return Dependency[]
+     */
+    public function dependencies()
+    {
+        return array_filter($this->blueprint, function ($value) {
+            return $value instanceof Dependency;
+        });
+    }
+
+    /**
+     * Wether this is a fixture or not
+     * @return boolean
+     */
+    public function isFixture()
+    {
+        return $this->isFixture;
+    }
+
+    /**
+     * Wether this is a fixture or not
+     * @return boolean
+     * @deprecated Backwards compatibility
+     */
+    public function is_fixture()
+    {
+        return $this->isFixture;
+    }
 }

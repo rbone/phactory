@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php">
+<phpunit bootstrap="vendor/autoload.php" colors="true">
   <!-- Test suites to be run -->
 	<testsuites>
 		<testsuite name="Tests">
@@ -12,6 +12,7 @@
     <whitelist>
       <directory>./</directory>
       <exclude>
+        <file>./bootstrap.php</file>
         <directory>./tests</directory>
         <directory>./vendor</directory>
       </exclude>

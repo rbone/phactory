@@ -5,23 +5,26 @@
     "homepage": "https://github.com/rbone/phactory",
     "license": "MIT",
     "authors": [
-      {
-        "name": "Richard Bone", "email": "rjonbone@gmail.com"
-      }
+        {
+            "name": "Richard Bone", "email": "rjonbone@gmail.com"
+        },
+        {
+            "name": "Alan Willms", "email": "alanwillms@gmail.com"
+        }
     ],
     "support": {
-      "email": "rjonbone@gmail.com",
-      "issues": "https://github.com/rbone/phactory/issues",
-      "wiki": "https://github.com/rbone/phactory/wiki",
-      "source": "https://github.com/rbone/phactory"
+        "email": "rjonbone@gmail.com",
+        "issues": "https://github.com/rbone/phactory/issues",
+        "wiki": "https://github.com/rbone/phactory/wiki",
+        "source": "https://github.com/rbone/phactory"
     },
     "require": {
-      "php": ">=5.3"
+        "php": ">=5.3"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-      "psr-0": { "Phactory": "lib" }
+        "psr-0": { "Phactory": "lib" }
     }
 }

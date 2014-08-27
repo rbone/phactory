@@ -2,41 +2,81 @@
 
 namespace Phactory;
 
+/**
+ * Prepare blueprints for a given object type
+ */
 class Factory
 {
-	private $factory;
-	private $name;
+    /**
+     * Factory object
+     * @var object
+     */
+    private $factory;
 
-	public function __construct($name, $factory)
-	{
-		$this->factory = $factory;
-		$this->name = $name;
-	}
+    /**
+     * Factory name
+     * @var string
+     */
+    private $name;
 
-	public function create($type, $override)
-	{
-		$base = $this->factory->blueprint();
-		$variation = $this->get_variation($type);
+    /**
+     * Constructor
+     * @param string $name factory name
+     * @param object $factory factory object
+     */
+    public function __construct($name, $factory)
+    {
+        $this->factory = $factory;
+        $this->name = $name;
+    }
 
-		$blueprint = array_merge($base, $variation, $override);
+    /**
+     * Creates a new blueprint
+     * @param string $type variation or fixture
+     * @param array $override attributes values overrides
+     * @return \Phactory\Blueprint
+     */
+    public function create($type, $override)
+    {
+        $base = $this->factory->blueprint();
+        $variation = $this->getVariation($type);
 
-		return new Blueprint($this->name, $type, $blueprint, $this->is_fixture($type));
-	}
+        $blueprint = array_merge($base, $variation, $override);
 
-	private function get_variation($type)
-	{
-		if ($type == 'blueprint')
-			return array();
-		else if (method_exists($this->factory, "{$type}_fixture"))
-			return call_user_func(array($this->factory, "{$type}_fixture"));
-		else if (method_exists($this->factory, $type))
-			return call_user_func(array($this->factory, $type));
-		else
-			throw new \BadMethodCallException("No such variation '$type' on ".get_class($this->factory));
-	}
+        return new Blueprint($this->name, $type, $blueprint, $this->isFixture($type));
+    }
 
-	private function is_fixture($type)
-	{
-		return method_exists($this->factory, "{$type}_fixture");
-	}
+    /**
+     * Applies a variation to the basic blueprint or calls the fixture
+     * @param string $type variation or fixture
+     * @return array
+     * @throws \BadMethodCallException
+     */
+    private function getVariation($type)
+    {
+        if ($type == 'blueprint') {
+            return array();
+        } elseif (method_exists($this->factory, "{$type}Fixture")) {
+            return call_user_func(array($this->factory, "{$type}Fixture"));
+        } elseif (method_exists($this->factory, "{$type}_fixture")) { // @deprecated Backwards compatibility
+            return call_user_func(array($this->factory, "{$type}_fixture"));
+        } elseif (method_exists($this->factory, $type)) {
+            return call_user_func(array($this->factory, $type));
+        } else {
+            throw new \BadMethodCallException("No such variation '$type' on " . get_class($this->factory));
+        }
+    }
+
+    /**
+     * Whether the variation is a fixture or not
+     * @param string $type variation name
+     * @return boolean
+     */
+    private function isFixture($type)
+    {
+        if (method_exists($this->factory, "{$type}_fixture")) { // @deprecated Backwards compatibility
+            return true;
+        }
+        return method_exists($this->factory, "{$type}Fixture");
+    }
 }

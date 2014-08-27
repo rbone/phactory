@@ -1,5 +1,7 @@
 # Phactory
 
+[(ver documentação em português)](docs/pt-BR/README.md)
+
 A PHP library for creating data for tests. Designed for simplicity
 and extensibility.
 
@@ -64,12 +66,13 @@ class User {}
 
 class MyCustomBuilder extends \Phactory\Builder
 {
-	protected function to_object($name, $values)
+	protected function toObject($name, $values)
 	{
 		$object = new $name;
 
-		foreach ($values as $key => $value)
-			$object->$key = $value;
+		foreach ($values as $key => $value) {
+            $object->$key = $value;
+        }
 
 		return $object;
 	}
