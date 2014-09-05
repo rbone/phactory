@@ -36,9 +36,12 @@ class Builder
             return str_replace('#{sn}', str_pad($count, 4, '0', STR_PAD_LEFT), $value);
         }, $blueprint->strings());
 
-        $relationships = array_map(function ($value) {
-            return $value->create();
-        }, $blueprint->relationships());
+        $relationships = $blueprint->relationships();
+
+        foreach ($relationships as $key => $relationship) {
+            $relationship->persisted = $blueprint->persisted;
+            $relationships[$key] = $relationship->create();
+        }
 
         $values = array_merge($values, $strings, $relationships);
 
@@ -50,6 +53,10 @@ class Builder
 
         //$object = $this->toObject($name, $values);
         $object = $this->to_object($name, $values); // @deprecated Backwards compatibility
+
+        if (false == $blueprint->persisted) {
+            return $object;
+        }
 
         \Phactory::triggers()->beforeSave($name, $type, $object);
 

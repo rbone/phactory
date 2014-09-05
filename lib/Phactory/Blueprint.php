@@ -23,6 +23,12 @@ class Blueprint
     public $type;
 
     /**
+     * Either this blueprint will be persisted or not
+     * @var boolean
+     */
+    public $persisted;
+
+    /**
      * Blueprint data (may have a variation applied)
      * @var array
      */
@@ -39,13 +45,15 @@ class Blueprint
      * @param string $type variation, i.e. "admin" in Phactory::user('admin')
      * @param array $blueprint blueprint for the given variation
      * @param boolean $isFixture
+     * @param boolean $persisted wether it will save the object or not
      */
-    public function __construct($name, $type, $blueprint, $isFixture = false)
+    public function __construct($name, $type, $blueprint, $isFixture = false, $persisted = true)
     {
         $this->name = $name;
         $this->type = $type;
         $this->blueprint = $blueprint;
         $this->isFixture = $isFixture;
+        $this->persisted = $persisted;
     }
 
     /**

@@ -89,7 +89,14 @@ class Phactory
     {
         list($type, $override) = self::resolveArgs($arguments);
 
-        return self::createBlueprint($name, $type, $override);
+        $persisted = true;
+
+        if (strlen($name) > 8 && substr($name, 0, 7) == 'unsaved') {
+            $persisted = false;
+            $name = substr($name, 7);
+        }
+
+        return self::createBlueprint($name, $type, $override, $persisted);
     }
 
     /**
@@ -97,15 +104,16 @@ class Phactory
      * @param string $name factory name
      * @param string $type variation or fixture name
      * @param array $override overriden attributes values
+     * @param boolean $persisted wether it will save the object or not
      * @return object|array
      */
-    public static function createBlueprint($name, $type, $override = array())
+    public static function createBlueprint($name, $type, $override = array(), $persisted = true)
     {
         if (self::fixtures()->hasFixture($name, $type)) {
             return self::fixtures()->getFixture($name, $type);
         }
 
-        $blueprint = self::getBlueprint($name, $type, $override);
+        $blueprint = self::getBlueprint($name, $type, $override, $persisted);
 
         $object = self::builder()->create($blueprint);
 
@@ -121,13 +129,14 @@ class Phactory
      * @param string $name factory name
      * @param string $type variation or fixture name
      * @param array $override overriden attributes values
+     * @param boolean $persisted wether it will save the object or not
      * @return \Phactory\Blueprint
      */
-    public static function getBlueprint($name, $type, $override = array())
+    public static function getBlueprint($name, $type, $override = array(), $persisted = true)
     {
         $factory = self::loader()->load($name);
 
-        return $factory->create($type, $override);
+        return $factory->create($type, $override, $persisted);
     }
 
     /**
