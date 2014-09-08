@@ -16,7 +16,11 @@ class Loader
      */
     public function load($name)
     {
-        $factoryClass = ucfirst($name) . "Phactory";
+        $factoryClass = ucfirst($name);
+
+        if (substr($name, -8) != 'Scenario') {
+            $factoryClass .= "Phactory";
+        }
 
         if (!class_exists($factoryClass)) {
             throw new \Exception("Unknown factory '$name'");

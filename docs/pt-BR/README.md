@@ -8,3 +8,4 @@ Sim, há documentação, veja os seguintes links:
 * [Builders](Builders.md)
 * [Fixtures](Fixtures.md)
 * [Gatilhos](Triggers.md)
+* [Cenários](Scenarios.md)

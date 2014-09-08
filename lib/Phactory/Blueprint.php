@@ -34,18 +34,25 @@ class Blueprint
     private $isFixture;
 
     /**
+     * @var boolean
+     */
+    private $isScenario;
+
+    /**
      * Constructor
      * @param string $name name of the factory, i.e., "user" in Phactory::user()
      * @param string $type variation, i.e. "admin" in Phactory::user('admin')
      * @param array $blueprint blueprint for the given variation
      * @param boolean $isFixture
+     * @param boolean $isScenario
      */
-    public function __construct($name, $type, $blueprint, $isFixture = false)
+    public function __construct($name, $type, $blueprint, $isFixture = false, $isScenario = false)
     {
         $this->name = $name;
         $this->type = $type;
         $this->blueprint = $blueprint;
         $this->isFixture = $isFixture;
+        $this->isScenario = $isScenario;
     }
 
     /**
@@ -99,6 +106,26 @@ class Blueprint
     public function isFixture()
     {
         return $this->isFixture;
+    }
+
+    /**
+     * Wether this is a scenario or not
+     * @return boolean
+     */
+    public function isScenario()
+    {
+        return $this->isScenario;
+    }
+
+    /**
+     * Return the current scenario
+     * @return object
+     */
+    public function getScenario()
+    {
+        if ($this->isScenario) {
+            return $this->blueprint;
+        }
     }
 
     /**
