@@ -22,6 +22,30 @@ class Builder
      */
     public function create($blueprint)
     {
+        if ($blueprint->isScenario()) {
+            return $this->createScenario($blueprint);
+        } else {
+            return $this->createObject($blueprint);
+        }
+    }
+
+    /**
+     * Loads a scenario
+     * @param array $blueprint
+     * @return object
+     */
+    protected function createScenario($blueprint)
+    {
+        return $blueprint->getScenario();
+    }
+
+    /**
+     * Converts a blueprint array into a persisted object
+     * @param array $blueprint
+     * @return object
+     */
+    protected function createObject($blueprint)
+    {
         $name = $blueprint->name;
         $type = $blueprint->type;
         if (!isset($this->count[$name])) {

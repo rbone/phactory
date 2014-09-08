@@ -38,12 +38,28 @@ class Factory
      */
     public function create($type, $override)
     {
-        $base = $this->factory->blueprint();
-        $variation = $this->getVariation($type);
+        if (substr($this->name, -8) == 'Scenario') {
 
-        $blueprint = array_merge($base, $variation, $override);
+            $this->factory->blueprint();
 
-        return new Blueprint($this->name, $type, $blueprint, $this->isFixture($type));
+            if ($type != 'blueprint') {
+                $this->factory->$type();
+            }
+
+            if ($override) {
+                throw new \Exception('Scenarios do not support overriden attributes');
+            }
+
+            return new Blueprint($this->name, $type, $this->factory, false, true);
+
+        } else {
+            $base = $this->factory->blueprint();
+            $variation = $this->getVariation($type);
+
+            $blueprint = array_merge($base, $variation, $override);
+
+            return new Blueprint($this->name, $type, $blueprint, $this->isFixture($type));
+        }
     }
 
     /**
