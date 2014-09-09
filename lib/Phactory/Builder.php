@@ -39,8 +39,7 @@ class Builder
         $relationships = $blueprint->relationships();
 
         foreach ($relationships as $key => $relationship) {
-            $relationship->persisted = $blueprint->persisted;
-            $relationships[$key] = $relationship->create();
+            $relationships[$key] = $relationship->create($blueprint->persisted);
         }
 
         $values = array_merge($values, $strings, $relationships);

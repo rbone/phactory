@@ -11,12 +11,6 @@ use \Phactory;
 class HasOneRelationship
 {
     /**
-     * Either this blueprint will be persisted or not
-     * @var boolean
-     */
-    public $persisted = true;
-
-    /**
      * Factory name
      * @var string
      */
@@ -49,10 +43,11 @@ class HasOneRelationship
 
     /**
      * Creates the relationship object
+     * @param boolean $persisted
      * @return array|object
      */
-    public function create()
+    public function create($persisted = true)
     {
-        return Phactory::createBlueprint($this->name, $this->type, $this->override, $this->persisted);
+        return Phactory::createBlueprint($this->name, $this->type, $this->override, $persisted);
     }
 }
