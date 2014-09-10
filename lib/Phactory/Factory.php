@@ -34,16 +34,17 @@ class Factory
      * Creates a new blueprint
      * @param string $type variation or fixture
      * @param array $override attributes values overrides
+     * @param boolean $persisted wether it will save the object or not
      * @return \Phactory\Blueprint
      */
-    public function create($type, $override)
+    public function create($type, $override, $persisted)
     {
         $base = $this->factory->blueprint();
         $variation = $this->getVariation($type);
 
         $blueprint = array_merge($base, $variation, $override);
 
-        return new Blueprint($this->name, $type, $blueprint, $this->isFixture($type));
+        return new Blueprint($this->name, $type, $blueprint, $this->isFixture($type), $persisted);
     }
 
     /**

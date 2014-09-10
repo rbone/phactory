@@ -21,6 +21,13 @@ class CustomBuilder extends \Phactory\DefaultBuilder
         
         return $object;
     }
+
+    protected function saveObject($name, $object)
+    {
+        $object->save();
+
+        return $object;
+    }
 }
 
 ```
@@ -36,3 +43,11 @@ Phactory::builder(new CustomBuilder());
 
 All blueprints will now be created using the CustomBuilder class.
 
+## Non-persisted objects
+
+Sometimes you don't need to persist the object in the database to perform your
+tests. If you want to get an object skipping the `saveObject` step, you can simply call:
+
+```php
+$user = Phactory::unsavedUser();
+```

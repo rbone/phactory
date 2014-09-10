@@ -43,10 +43,11 @@ class HasOneRelationship
 
     /**
      * Creates the relationship object
+     * @param boolean $persisted
      * @return array|object
      */
-    public function create()
+    public function create($persisted = true)
     {
-        return Phactory::createBlueprint($this->name, $this->type, $this->override);
+        return Phactory::createBlueprint($this->name, $this->type, $this->override, $persisted);
     }
 }

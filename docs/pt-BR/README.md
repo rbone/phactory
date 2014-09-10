@@ -1,6 +1,6 @@
 # Documentação
 
-Sim, há documentação, veja os seguintes links:
+Sim, nós temos documentação! Consulte os seguintes links:
 
 * [O Básico](The-Basics.md)
 * [Relacionamentos](Relationships.md)
