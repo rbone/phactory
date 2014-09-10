@@ -88,7 +88,7 @@ echo get_class($user); // 'User'
 
 ## Status
 
-Up to v1.2.0
+Up to v1.3.0
 
 [![Build Status](https://travis-ci.org/rbone/phactory.png?branch=master)](https://travis-ci.org/rbone/phactory)
 
@@ -99,7 +99,7 @@ Via composer:
 ```js
 {
   "require-dev": {
-    "rbone/phactory": "1.2.*"
+    "rbone/phactory": "1.3.*"
   }
 }
 
