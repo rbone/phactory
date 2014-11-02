@@ -48,9 +48,9 @@ class Dependency
 
         if (method_exists($subject, $part)) {
             $value = call_user_func(array($subject, $part));
-        } elseif (is_array($subject) && isset($subject[$part])) {
+        } elseif (is_array($subject) && array_key_exists($part, $subject)) {
             $value = $subject[$part];
-        } elseif (is_object($subject) && isset($subject->$part)) {
+        } elseif (is_object($subject) && property_exists($subject, $part)) {
             $value = $subject->$part;
         } else {
             $type = is_object($subject) ? get_class($subject) : gettype($subject);
