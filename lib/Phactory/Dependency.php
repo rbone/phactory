@@ -13,7 +13,7 @@ class Dependency
      * Dependency path, i.e.: "topic.author" in comments factory
      * @var string
      */
-    private $dependency;
+    protected $dependency;
 
     /**
      * @param string $dependency dependency path, i.e.: "topic.author"
@@ -42,19 +42,19 @@ class Dependency
      * @return Mixed
      * @throws \Exception
      */
-    private function get($parts, $subject)
+    protected function get($parts, $subject)
     {
         $part = array_shift($parts);
 
-        if (method_exists($subject, $part)) {
-            $value = call_user_func(array($subject, $part));
-        } elseif (is_array($subject) && array_key_exists($part, $subject)) {
-            $value = $subject[$part];
-        } elseif (is_object($subject) && property_exists($subject, $part)) {
-            $value = $subject->$part;
-        } else {
+        if (!$this->has($part, $subject)) {
             $type = is_object($subject) ? get_class($subject) : gettype($subject);
             throw new \Exception(sprintf("Can't find %s in %s", $part, $type));
+        } elseif (is_array($subject)) {
+            $value = $subject[$part];
+        } elseif (method_exists($subject, $part)) {
+            $value = call_user_func(array($subject, $part));
+        } else {
+            $value = $subject->$part;
         }
 
         if (count($parts) == 0) {
@@ -62,5 +62,20 @@ class Dependency
         } else {
             return $this->get($parts, $value);
         }
+    }
+
+    /**
+     * Check if the necessary part exists in the dependency
+     * @param $part i.e., "author" in "topic.author"
+     * @param object|array $subject
+     * @return boolean
+     */
+    protected function has($part, $subject)
+    {
+        return (
+            method_exists($subject, $part)
+            || (is_array($subject) && array_key_exists($part, $subject))
+            || (is_object($subject) && property_exists($subject, $part))
+        );
     }
 }

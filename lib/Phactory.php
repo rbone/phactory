@@ -1,7 +1,5 @@
 <?php
 
-use \Phactory\HasOneRelationship;
-use \Phactory\Dependency;
 use \Phactory\Builder;
 use \Phactory\Loader;
 use \Phactory\Fixtures;
@@ -38,6 +36,18 @@ class Phactory
     private static $triggers;
 
     /**
+     * Dependency class name
+     * @var string
+     */
+    public static $dependencyClass = '\Phactory\Dependency';
+
+    /**
+     * HasOneRelationship class name
+     * @var string
+     */
+    public static $hasOneRelationshipClass = '\Phactory\HasOneRelationship';
+
+    /**
      * Reset all Phactory settings to default
      */
     public static function reset()
@@ -46,6 +56,9 @@ class Phactory
         self::$builder = null;
         self::$fixtures = null;
         self::$triggers = null;
+
+        self::$hasOneRelationshipClass = '\Phactory\HasOneRelationship';
+        self::$dependencyClass = '\Phactory\Dependency';
     }
 
     /**
@@ -62,7 +75,7 @@ class Phactory
 
         list($type, $override) = self::resolveArgs($arguments);
 
-        return new HasOneRelationship($name, $type, $override);
+        return new self::$hasOneRelationshipClass($name, $type, $override);
     }
 
     /**
@@ -74,7 +87,7 @@ class Phactory
      */
     public static function uses($dependancy)
     {
-        return new Dependency($dependancy);
+        return new self::$dependencyClass($dependancy);
     }
 
     /**

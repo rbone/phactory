@@ -5,6 +5,7 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
     public function testDependency()
     {
         Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
         $entry = Phactory::entry();
 
         $this->assertSame($entry->designer, $entry->design->designer);
@@ -13,6 +14,7 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
     public function testMultiLevelDependencyWithMethodCalls()
     {
         Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
         $entry = Phactory::entry();
 
@@ -22,6 +24,7 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
     public function testDependencyWithMethodAndNullValues()
     {
         Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
         $entry = Phactory::entry([
@@ -36,6 +39,7 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
     public function testDependencyWithPropertyAndNullValues()
     {
         Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
         $entry = Phactory::entry([
@@ -50,6 +54,7 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
     public function testDependencyWithArrayAndNullValues()
     {
         Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
         $entry = Phactory::entry([
@@ -59,6 +64,32 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertNull($entry->request_date);
+    }
+
+    public function testCustomDependencyClass()
+    {
+        Phactory::reset();
+        Phactory::$dependencyClass = 'CustomDependency';
+
+        $entry = Phactory::entry([
+            'budget' => Phactory::budget(['amount' => null])
+        ]);
+
+        $this->assertNull($entry->budget_amount);
+    }
+}
+
+class CustomDependency extends \Phactory\Dependency
+{
+    protected function has($part, $subject)
+    {
+        return (
+            method_exists($subject, $part)
+            || (is_array($subject) && array_key_exists($part, $subject))
+            || (is_object($subject) && property_exists($subject, $part))
+            // Custom property existance checking
+            || (method_exists($subject, 'hasAttribute') && $subject->hasAttribute($part))
+        );
     }
 }
 
@@ -72,6 +103,8 @@ class EntryPhactory
             'co_designer' => Phactory::uses('design.attachment.co_creator'),
             'design' => Phactory::hasOne('design'),
             'request_date' => Phactory::uses('design.request.date'),
+            'budget' => Phactory::hasOne('budget'),
+            'budget_amount' => Phactory::uses('budget.amount'),
         );
     }
 }
@@ -127,17 +160,60 @@ class DesignerPhactory
     }
 }
 
+class BudgetPhactory
+{
+    public function blueprint()
+    {
+        return array(
+            'amount' => 100.00,
+        );
+    }
+}
+
 class TestBuilder extends \Phactory\Builder
 {
     protected function toObject($name, $values)
     {
         if ($name == 'attachment') {
             return new Attachment($values);
+        } elseif ($name == 'budget') {
+            return new Budget($values);
         } elseif ($name == 'request') {
             return $values;
         } else {
             return (object) $values;
         }
+    }
+}
+
+class Budget
+{
+    private $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function __get($name)
+    {
+        return $this->data[$name];
+    }
+
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
+    }
+
+    // Custom property checking
+    public function hasAttribute($name)
+    {
+        return array_key_exists($name, $this->data);
     }
 }
 

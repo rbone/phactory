@@ -14,19 +14,19 @@ class HasOneRelationship
      * Factory name
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * Variation or fixture name
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * Attributes to override
      * @var array
      */
-    private $override;
+    protected $override;
 
     /**
      * Constructor
