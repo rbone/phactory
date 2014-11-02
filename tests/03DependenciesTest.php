@@ -27,11 +27,11 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
         Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
-        $entry = Phactory::entry([
-            'design' => Phactory::design([
-                'attachment' => Phactory::attachment(['creator' => null]),
-            ])
-        ]);
+        $entry = Phactory::entry(array(
+            'design' => Phactory::design(array(
+                'attachment' => Phactory::attachment(array('creator' => null)),
+            ))
+        ));
 
         $this->assertNull($entry->designer);
     }
@@ -42,11 +42,11 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
         Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
-        $entry = Phactory::entry([
-            'design' => Phactory::design([
-                'attachment' => Phactory::attachment(['co_creator' => null]),
-            ])
-        ]);
+        $entry = Phactory::entry(array(
+            'design' => Phactory::design(array(
+                'attachment' => Phactory::attachment(array('co_creator' => null)),
+            ))
+        ));
 
         $this->assertNull($entry->co_designer);
     }
@@ -57,11 +57,11 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
         Phactory::$dependencyClass = 'CustomDependency';
         Phactory::builder(new TestBuilder);
 
-        $entry = Phactory::entry([
-            'design' => Phactory::design([
-                'request' => Phactory::request(['date' => null]),
-            ])
-        ]);
+        $entry = Phactory::entry(array(
+            'design' => Phactory::design(array(
+                'request' => Phactory::request(array('date' => null)),
+            ))
+        ));
 
         $this->assertNull($entry->request_date);
     }
@@ -71,9 +71,9 @@ class DependenciesTest extends PHPUnit_Framework_TestCase
         Phactory::reset();
         Phactory::$dependencyClass = 'CustomDependency';
 
-        $entry = Phactory::entry([
-            'budget' => Phactory::budget(['amount' => null])
-        ]);
+        $entry = Phactory::entry(array(
+            'budget' => Phactory::budget(array('amount' => null))
+        ));
 
         $this->assertNull($entry->budget_amount);
     }
